@@ -26,15 +26,6 @@ template<class T> T power(T x, T y){T res=1,a = x; while(y){if(y&1){res*=a;}a*=a
 template<class T> T bigmod(T x,T y,T mod){T res=1,a=x; while(y){if(y&1){res=(res*a)%mod;}a=((a%mod)*(a%mod))%mod;y>>=1;}return res;}
 
 
-int dir[8][2]={{-1,0}
-              ,{1,0}
-              ,{0,-1}
-              ,{0,1}
-              ,{-1,-1}
-              ,{-1,1}
-              ,{1,-1}
-              ,{1,1}};
-
 
 using namespace std;
 
@@ -114,10 +105,9 @@ void Game::round_debug(){
 }
 
 int main() {
-    #ifdef partho222
-        freopen("input.txt","r",stdin);
-        //freopen("output.txt","w",stdout);
-    #endif
+
+        //freopen("input.txt","r",stdin);       // uncomment this to take input from "input.txt"
+        //freopen("output.txt","w",stdout);     // uncomment this to write output to "output.txt"
 
     Game g;
 
