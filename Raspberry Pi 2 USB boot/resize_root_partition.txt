@@ -1,0 +1,34 @@
+#########################################################################################################
+### Resizing root(/) partition on runtime ( Raspberry Pi 2)
+###--** Do all operation as root **--###
+#########################################################################################################
+###** diskpart, resize2fs need to be installed on RPi2
+#########################################################################################################
+
+1. Delete current partition table & change it to use whole disk/desired size
+*** (do not move partition to left side or change starting sector, only change end sector)
+
+# diskpart /dev/sda
+command : p
+	it will show current partition table (remember the starting sector of /dev/sda2)
+command : d
+	it will delete partition 2
+command : n
+select : p
+partition number : 2
+First sector : [put the previous sector value of /dev/sda2]
+Last sector : ENTER for default value/desired one
+
+command : p
+	see if there any change needed
+command : w
+	it will write all changes to disk
+command : q
+
+2. now we need to reboot
+
+# reboot -h now
+
+3. after reboot
+
+# resize2fs /dev/sda2

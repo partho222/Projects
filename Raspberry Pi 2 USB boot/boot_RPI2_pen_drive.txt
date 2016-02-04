@@ -1,0 +1,71 @@
+#########################################################################################################
+### boot from USB/external hdd ( Raspberry Pi 2)
+###--** Do all operation as root **--###
+#########################################################################################################
+
+
+#########################################################################################################
+### Requirements
+#########################################################################################################
+1. Raspberry Pi 2 (900 MHz cpu, 1 GB ram) or other model
+2. minimum 60 mb SD card (micro)
+3. USB device or hdd > 3 GB
+4. dd, parted installed
+
+
+#########################################################################################################
+### Steps
+#########################################################################################################
+1. write OS image on pen drive.
+2. make 56 MB FAT16 lba partition on sd card.
+3. copy data from [pen drive] /boot (bit to bit) partition to new sd card partition.
+4. delete /boot partition from pen drive.
+5. mount sd card
+> open cmdline.txt
+> change "root=/dev/sda2"
+
+
+#########################################################################################################
+### Details (change with your needs)
+#########################################################################################################
+*** pen drive is on /dev/sdb
+*** sd card on /dev/sdc
+
+1. write image to USB/hdd
+
+# dd bs=4m if=/home/tariq/downloads/raspbian.img of=/dev/sdb
+
+2. after writing image there will be 2 partiton on pen drive
+
+/dev/sdb1
+/dev/sdb2
+
+3. now we create 56 mb FAT16 lba partition on sd card.
+
+# parted /dev/sdc
+(parted) unit MB print
+(parted) mkpart primary fat16 1 60
+(parted) q
+
+4. now we need to copy /dev/sdb1 to /dev/sdc1
+
+# dd if=/dev/sdb1 of=/dev/sdc1
+
+5. we now mount /dev/sdc1
+
+# cd /mnt
+# mkdir tmp
+# mount /dev/sdc1 /mnt/tmp
+# cd /mnt/tmp
+# nano cmdline.txt
+
+change "root=/dev/sda2"
+save & exit
+
+# umount /dev/sdc1
+
+6. Delete /dev/sdb1 partition
+
+# parted /dev/sdb
+(parted) rm
+(parted) 1
